@@ -5,7 +5,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/nill/passgo"
+	"github.com/zachneal/passgo"
 	"golang.org/x/crypto/openpgp"
 )
 
