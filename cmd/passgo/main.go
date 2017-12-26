@@ -53,8 +53,5 @@ func read(c *cli.Context) error {
 	keyringPath := path.Clean(c.String("keyring"))
 	storePath := path.Clean(c.String("store"))
 	keys, err := passgo.ReadKeyRing(keyringPath)
-	if err != nil {
-		return err
-	}
 	return err
 }
