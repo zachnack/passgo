@@ -37,7 +37,7 @@ func prompt(key []openpgp.Key) error {
 		return err
 	}
 
-	errcheck = func(e error) {
+	errcheck := func(e error) {
 		if err != nil {
 			err = e
 		}
@@ -48,10 +48,17 @@ func prompt(key []openpgp.Key) error {
 	}
 	return err
 }
+func open(keyring, store string) (*passgo.Store, error) {
+	keyring = path.Clean(keyring)
+	store = path.Clean(store)
+	keys, err := passgo.ReadKeyRing(keyring)
+	if err != nil {
+		return nil, err
+	}
+	return passgo.Open(store, keys, prompt)
+}
 
 func read(c *cli.Context) error {
-	keyringPath := path.Clean(c.String("keyring"))
-	storePath := path.Clean(c.String("store"))
-	keys, err := passgo.ReadKeyRing(keyringPath)
+	_, err := open(c.String("keyring"), c.String("store"))
 	return err
 }
