@@ -35,5 +35,23 @@ func Open(path string, keys openpgp.EntityList) (*Store, error) {
 		names = append(names, buf.Text())
 	}
 	err = buf.Err()
+	if err != nil {
+		return s, err
+	}
+	keys = Filter(keys, names...)
+	s.entities = keys
 	return s, err
+}
+
+// Filter openpg keys by name.
+func Filter(keys openpgp.EntityList, names ...string) openpgp.EntityList {
+	var list openpgp.EntityList
+	for _, entity := range keys {
+		for _, name := range names {
+			if _, ok := entity.Identities[name]; ok {
+				list = append(list, entity)
+			}
+		}
+	}
+	return list
 }
